@@ -3,6 +3,43 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Grid HorizontalAlignment="Left" Height="118" Margin="10,10,0,0" VerticalAlignment="Top" Width="497">
+            <Border BorderThickness="1"
+                BorderBrush="#FF000000" Margin="13,9,371,11">
+                <Image x:Name="imgProc0" Margin="1" >
+                    <Image.OpacityMask>
+                        <SolidColorBrush Color="#FFACB0AC" Opacity="0.795"/>
+                    </Image.OpacityMask>
+                </Image>
+            </Border>
+
+            <Border BorderThickness="1"
+                BorderBrush="#FF000000" Margin="131,9,253,11">
+                <Image x:Name="imgProc1" Margin="1" >
+                    <Image.OpacityMask>
+                        <SolidColorBrush Color="#FFACB0AC" Opacity="0.795"/>
+                    </Image.OpacityMask>
+                </Image>
+            </Border>
+
+            <Border BorderThickness="1"
+                BorderBrush="#FF000000" Margin="256,9,128,11">
+                <Image x:Name="imgProc2" Margin="1" >
+                    <Image.OpacityMask>
+                        <SolidColorBrush Color="#FFACB0AC" Opacity="0.795"/>
+                    </Image.OpacityMask>
+                </Image>
+            </Border>
+
+            <Border BorderThickness="1"
+                BorderBrush="#FF000000" Margin="374,9,10,11">
+                <Image x:Name="imgProc3" Margin="1" >
+                    <Image.OpacityMask>
+                        <SolidColorBrush Color="#FFACB0AC" Opacity="0.795"/>
+                    </Image.OpacityMask>
+                </Image>
+            </Border>
+        </Grid>
+
     </Grid>
 </Window>
