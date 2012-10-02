@@ -71,9 +71,13 @@ namespace emguLab
         void resizeDemo()
         {
             string filepath = Directory.GetFiles(@"img\resize", "*.png")[0];
-            Image<Bgr, Byte> My_Image = new Image<Bgr, byte>(filepath);
+            Image<Bgr, Byte> srcImg = new Image<Bgr, byte>(filepath);
 
-            imgProc0.Source = GetBitmapSource(My_Image);
+            imgProc0.Source = GetBitmapSource(srcImg);
+            imgProc1.Source = GetBitmapSource(srcImg.Resize(srcImg.Width*2, srcImg.Height*2, Emgu.CV.CvEnum.INTER.CV_INTER_NN));
+            imgProc2.Source = GetBitmapSource(srcImg.Resize(srcImg.Width * 2, srcImg.Height * 2, Emgu.CV.CvEnum.INTER.CV_INTER_LINEAR));
+            imgProc3.Source = GetBitmapSource(srcImg.Resize(srcImg.Width * 2, srcImg.Height * 2, Emgu.CV.CvEnum.INTER.CV_INTER_AREA));
+
         }
 
         private System.Windows.Media.Imaging.BitmapSource GetBitmapSource(Image<Bgr, Byte> _image)
