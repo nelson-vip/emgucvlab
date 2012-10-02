@@ -72,12 +72,11 @@ namespace emguLab
         {
             string filepath = Directory.GetFiles(@"img\resize", "*.png")[0];
             Image<Bgr, Byte> srcImg = new Image<Bgr, byte>(filepath);
-
-            imgProc0.Source = GetBitmapSource(srcImg);
-            imgProc1.Source = GetBitmapSource(srcImg.Resize(srcImg.Width*2, srcImg.Height*2, Emgu.CV.CvEnum.INTER.CV_INTER_NN));
-            imgProc2.Source = GetBitmapSource(srcImg.Resize(srcImg.Width * 2, srcImg.Height * 2, Emgu.CV.CvEnum.INTER.CV_INTER_LINEAR));
-            imgProc3.Source = GetBitmapSource(srcImg.Resize(srcImg.Width * 2, srcImg.Height * 2, Emgu.CV.CvEnum.INTER.CV_INTER_AREA));
-
+            int scale = 3;
+            setImage("imgProc0", GetBitmapSource(srcImg), "Origin");
+            setImage("imgProc1", GetBitmapSource(srcImg.Resize(srcImg.Width * scale, srcImg.Height * scale, Emgu.CV.CvEnum.INTER.CV_INTER_NN)), "Nearest Neighbor");
+            setImage("imgProc2", GetBitmapSource(srcImg.Resize(srcImg.Width * scale, srcImg.Height * scale, Emgu.CV.CvEnum.INTER.CV_INTER_LINEAR)), "Bilinear");
+            setImage("imgProc3", GetBitmapSource(srcImg.Resize(srcImg.Width * scale, srcImg.Height * scale, Emgu.CV.CvEnum.INTER.CV_INTER_CUBIC)), "Cubic");
         }
 
         private System.Windows.Media.Imaging.BitmapSource GetBitmapSource(Image<Bgr, Byte> _image)
@@ -93,6 +92,16 @@ namespace emguLab
             //Using the freeze function to avoid cross thread operations 
             bi.Freeze();
             return bi;
+        }
+
+        void setImage(string target, System.Windows.Media.Imaging.BitmapSource bmp, string info)
+        {
+            System.Windows.Controls.Image _img = this.FindName(target) as System.Windows.Controls.Image;
+            if (_img != null)
+            {
+                _img.Source = bmp;
+                _img.ToolTip = info;
+            }
         }
     }
 }

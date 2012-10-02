@@ -15,24 +15,24 @@
 
             <Border BorderThickness="1" Grid.Row="0" Grid.Column="0" MinWidth="120"
                 BorderBrush="#FF000000" Margin="2" >
-                <Image x:Name="imgProc0" Margin="1" ></Image>
+                <Image x:Name="imgProc0" Margin="1" Stretch="None" ></Image>
             </Border>
 
             <Border BorderThickness="1" Grid.Row="0" Grid.Column="1" MinWidth="120"
                 BorderBrush="#FF000000" Margin="2" >
-                <Image x:Name="imgProc1" Margin="1" >
+                <Image x:Name="imgProc1" Margin="1" Stretch="None" >
                 </Image>
             </Border>
 
             <Border BorderThickness="1" Grid.Row="1" Grid.Column="0" MinWidth="120"
                 BorderBrush="#FF000000" Margin="2" >
-                <Image x:Name="imgProc2" Margin="1" >
+                <Image x:Name="imgProc2" Margin="1" Stretch="None" >
                 </Image>
             </Border>
 
             <Border BorderThickness="1" Grid.Row="1" Grid.Column="1" MinWidth="120"
                 BorderBrush="#FF000000" Margin="2" >
-                <Image x:Name="imgProc3" Margin="1">
+                <Image x:Name="imgProc3" Margin="1" Stretch="None">
                 </Image>
             </Border>
         </Grid>
