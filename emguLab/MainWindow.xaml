@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Grid HorizontalAlignment="Left" Height="118" Margin="10,10,0,0" VerticalAlignment="Top" Width="497">
+        <Grid Margin="10">
+            
             <Border BorderThickness="1"
                 BorderBrush="#FF000000" Margin="13,9,371,11">
                 <Image x:Name="imgProc0" Margin="1" >
