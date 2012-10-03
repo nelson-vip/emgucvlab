@@ -35,15 +35,19 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>piece_of_cake.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Emgu.CV">
-      <HintPath>..\..\..\src\Emgu\emgucv-windows-x64 2.4.0.1717\bin\Emgu.CV.dll</HintPath>
+      <HintPath>..\debug\bin\emgu\Emgu.CV.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Emgu.Util">
-      <HintPath>..\..\..\src\Emgu\emgucv-windows-x64 2.4.0.1717\bin\Emgu.Util.dll</HintPath>
+      <HintPath>..\debug\bin\emgu\Emgu.Util.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -76,6 +80,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Themes\Combobox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -105,6 +113,9 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="piece_of_cake.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
