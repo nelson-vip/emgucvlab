@@ -19,6 +19,8 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.ObjectModel;
+using emguLab.core;
+using System.Diagnostics;
 
 namespace emguLab
 {
@@ -27,49 +29,25 @@ namespace emguLab
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<string> modules = new List<String> 
-        {
-            CvInvoke.OPENCV_CORE_LIBRARY
-            ,CvInvoke.OPENCV_IMGPROC_LIBRARY
-
-            ,CvInvoke.OPENCV_VIDEO_LIBRARY
-            //,CvInvoke.OPENCV_FLANN_LIBRARY
-            //,CvInvoke.OPENCV_ML_LIBRARY
-
-            //,CvInvoke.OPENCV_HIGHGUI_LIBRARY
-            //,CvInvoke.OPENCV_OBJDETECT_LIBRARY
-            //,CvInvoke.OPENCV_FEATURES2D_LIBRARY
-            //,CvInvoke.OPENCV_CALIB3D_LIBRARY
-              
-            //,CvInvoke.OPENCV_LEGACY_LIBRARY
-
-            //,CvInvoke.OPENCV_CONTRIB_LIBRARY
-            //,CvInvoke.OPENCV_NONFREE_LIBRARY
-            //,CvInvoke.OPENCV_PHOTO_LIBRARY
-            //,CvInvoke.OPENCV_VIDEOSTAB_LIBRARY
- 
-            //,CvInvoke.OPENCV_FFMPEG_LIBRARY 
-            //,CvInvoke.OPENCV_GPU_LIBRARY 
-            //,CvInvoke.OPENCV_STITCHING_LIBRARY
-            
-            //,CvInvoke.EXTERN_GPU_LIBRARY
-            //,CvInvoke.EXTERN_LIBRARY
-        };
-        
-
         public MainWindow()
         {
-            //*
-            modules.RemoveAll(String.IsNullOrEmpty);
-            for (int i = 0; i < modules.Count; ++i)
-                modules[i] = String.Format("{0}.dll", modules[i]);
-            CvInvoke.LoadUnmanagedModules(null, modules.ToArray());
-            //*/
             InitializeComponent();
+            
+            initModuleLoading();
+            initKeyBindings();
             loadSelector();
+            
+            NxConsole.Initialize();
+            this.Activate(); //bring this to front
         }
 
-        private System.Windows.Media.Imaging.BitmapSource GetBitmapSource(Image<Bgr, Byte> _image)
+        void OnToggleConsole(object sender, ExecutedRoutedEventArgs e)
+        {
+            NxConsole.Toggle();
+            this.Activate();
+        }
+
+        System.Windows.Media.Imaging.BitmapSource GetBitmapSource(Image<Bgr, Byte> _image)
         {
             BitmapImage bi = new BitmapImage();
             bi.BeginInit();
@@ -96,20 +74,47 @@ namespace emguLab
 
         void loadSelector()
         {
-            List<string> imgPath = Directory.GetFiles(@"img\resize", "*.png").ToList<string>();
-            imgSelector.ItemsSource = imgPath;
-            imgSelector.SelectedIndex = imgPath.Count > 0 ? 0 : -1;
+            List<FileInfo> files = new List<FileInfo>();
+            foreach (var path in Directory.GetFiles(@"img\resize", "*.png").ToList<string>())
+            {
+                files.Add(new FileInfo(path));
+            }
+            imgSelector.ItemsSource = files;
+            imgSelector.DisplayMemberPath = "Name";
+            imgSelector.SelectedIndex = files.Count > 0 ? 0 : -1;
         }
 
-        private void imgSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void imgSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            Image<Bgr, Byte> srcImg = new Image<Bgr, byte>(imgSelector.SelectedItem.ToString());
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            FileInfo fio = imgSelector.SelectedItem as FileInfo;
+            Image<Bgr, Byte> srcImg = new Image<Bgr, byte>(fio.FullName);
             int scale = 3;
+            NxConsole.Print(ConsoleColor.Green,
+                string.Format("[{0,5}ms] Image {1}:{2}*{3} loaded.", sw.Elapsed.Milliseconds, fio.Name, srcImg.Width, srcImg.Height));
+
             setImage("imgProc0", GetBitmapSource(srcImg), "Origin");
+            NxConsole.Print(ConsoleColor.Green,
+                string.Format("[{0,5}ms] Finished rendering Origin.", sw.Elapsed.Milliseconds));
+
             setImage("imgProc1", GetBitmapSource(srcImg.Resize(srcImg.Width * scale, srcImg.Height * scale, Emgu.CV.CvEnum.INTER.CV_INTER_NN)), "Nearest Neighbor");
+            NxConsole.Print(ConsoleColor.Green,
+                string.Format("[{0,5}ms] Finished rendering proc1.", sw.Elapsed.Milliseconds));
+            
             setImage("imgProc2", GetBitmapSource(srcImg.Resize(srcImg.Width * scale, srcImg.Height * scale, Emgu.CV.CvEnum.INTER.CV_INTER_LINEAR)), "Bilinear");
+            NxConsole.Print(ConsoleColor.Green,
+                string.Format("[{0,5}ms] Finished rendering proc2.", sw.Elapsed.Milliseconds));
+            
             setImage("imgProc3", GetBitmapSource(srcImg.Resize(srcImg.Width * scale, srcImg.Height * scale, Emgu.CV.CvEnum.INTER.CV_INTER_CUBIC)), "Cubic");
+            NxConsole.Print(ConsoleColor.Green,
+                string.Format("[{0,5}ms] Finished rendering proc3.", sw.Elapsed.Milliseconds));
         }
+
+        void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            
+        }
+
     }
 }
