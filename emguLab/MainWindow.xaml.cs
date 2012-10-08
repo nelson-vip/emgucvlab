@@ -84,7 +84,7 @@ namespace emguLab
             imgSelector.SelectedIndex = files.Count > 0 ? 0 : -1;
         }
 
-        void imgSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void imgSelector_SelectionChanged2(object sender, SelectionChangedEventArgs e)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -107,6 +107,35 @@ namespace emguLab
                 string.Format("[{0,5}ms] Finished rendering proc2.", sw.Elapsed.Milliseconds));
             
             setImage("imgProc3", GetBitmapSource(srcImg.Resize(srcImg.Width * scale, srcImg.Height * scale, Emgu.CV.CvEnum.INTER.CV_INTER_CUBIC)), "Cubic");
+            NxConsole.Print(ConsoleColor.Green,
+                string.Format("[{0,5}ms] Finished rendering proc3.", sw.Elapsed.Milliseconds));
+        }
+
+        void imgSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            FileInfo fio = imgSelector.SelectedItem as FileInfo;
+            Image<Bgr, Byte> srcImg = new Image<Bgr, byte>(fio.FullName);
+            int scale = 3;
+            NxConsole.Print(ConsoleColor.Green,
+                string.Format("[{0,5}ms] Image {1}:{2}*{3} loaded.", sw.Elapsed.Milliseconds, fio.Name, srcImg.Width, srcImg.Height));
+
+            ;
+
+            setImage("imgProc0", GetBitmapSource(srcImg), "Origin");
+            NxConsole.Print(ConsoleColor.Green,
+                string.Format("[{0,5}ms] Finished rendering Origin.", sw.Elapsed.Milliseconds));
+
+            setImage("imgProc1", GetBitmapSource(srcImg.Rotate(90, new Bgr(System.Drawing.Color.GhostWhite))), "Nearest Neighbor");
+            NxConsole.Print(ConsoleColor.Green,
+                string.Format("[{0,5}ms] Finished rendering proc1.", sw.Elapsed.Milliseconds));
+
+            setImage("imgProc2", GetBitmapSource(srcImg.Rotate(180, new Bgr(System.Drawing.Color.GhostWhite))), "Bilinear");
+            NxConsole.Print(ConsoleColor.Green,
+                string.Format("[{0,5}ms] Finished rendering proc2.", sw.Elapsed.Milliseconds));
+
+            setImage("imgProc3", GetBitmapSource(srcImg.Rotate(270, new Bgr(System.Drawing.Color.GhostWhite))), "Cubic");
             NxConsole.Print(ConsoleColor.Green,
                 string.Format("[{0,5}ms] Finished rendering proc3.", sw.Elapsed.Milliseconds));
         }
